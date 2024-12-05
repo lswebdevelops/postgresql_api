@@ -10,9 +10,9 @@ class Pool {
   close() {
     return this._pool.end();
   }
-
-  query(sql) {
-    return this._pool.query(sql); 
+// 
+  query(sql, params) {
+    return this._pool.query(sql, params); 
   }
 }
 
