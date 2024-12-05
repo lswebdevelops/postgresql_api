@@ -13,22 +13,34 @@ class UserRepo {
     // const { rows } = await pool.query(`select * from users where id = ${id};
     //     `);
 
-    
     // the right way
-    const { rows } = await pool.query(
-      `select * from users where id = $1;`
-        ,
-      [id]
-    );
+    const { rows } = await pool.query(`select * from users where id = $1;`, [
+      id,
+    ]);
 
     return toCamelCase(rows)[0];
   }
 
-  static async insert() {}
+  static async insert(username, bio) {
+    const { rows } = await pool.query(
+      "insert into users (username, bio) values ($1, $2) RETURNING *;",
+      [username, bio]
+    );
+    return toCamelCase(rows)[0];
+  }
 
-  static async update() {}
+  static async update(id, username, bio) {
+    const { rows } = await pool.query(
+      "update users set username = $1 , bio = $2 where id = $3 RETURNING *;",
+      [username, bio, id]
+    );
+    return toCamelCase(rows)[0];
+  }
 
-  static async delete() {}
+  static async delete(id) {
+    const { rows } = await pool.query("delete from users where id = $1 RETURNING *;", [id]);
+    return toCamelCase(rows)[0];
+  }
 }
 
 module.exports = UserRepo;
