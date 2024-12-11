@@ -20,13 +20,13 @@ beforeAll(async () => {
     password: "20126619",
   });
   // create a new role
-  await pool.query(`
-      create role ${roleName} with login password '${roleName}';
-      `);
+  await pool.query(
+    format('create role %I with login password %L;', roleName, roleName)
+  );
   // create a schema with the same name
-  await pool.query(`
-        create schema ${roleName} authorization ${roleName};
-        `);
+  await pool.query(
+    format("create schema %I authorization %I;", roleName, roleName)
+  );
   // disconnect entirely from pg
   await pool.close();
 
